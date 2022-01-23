@@ -6,16 +6,21 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
-	"strconv"
 	"time"
 )
 
-func (bc *Blockchain) Run(str string) {
-	// 블록체인 생성
-	// 리턴값은 BlockChain 구조체의 주소를 반환
-	//bc := NewBlockchain()
+func (txs *Txs) TxRun(data []byte) {
+	txs.AddTx(data)
 
-	bc.AddBlock(str)
+	for i, tx := range txs.Txs {
+		tx.TPrint(i)
+	}
+}
+
+func (bc *Blockchain) Run(data []byte) {
+
+	//블록 생성 , 블록 추가
+	bc.AddBlock(data)
 
 	for i, bc := range bc.Blocks {
 		bc.BPrint(i)
@@ -23,30 +28,6 @@ func (bc *Blockchain) Run(str string) {
 
 	//가변값을 가진 시드를 주어야 math/rand 값이 바뀜
 	rand.Seed(time.Now().UnixNano())
-	request := []byte(strconv.Itoa(rand.Intn(1000)))
-
-	//최상의 블럭의 PrevBlockHash
-	inHash := bc.Blocks[len(bc.Blocks)-1].Hash
-
-	for _, v := range bc.Blocks {
-
-		block := bc.FindBlock(inHash)
-
-		if block != nil {
-			if v.EqualData(request) {
-				f.Println("found")
-				f.Printf("%s\n", v.Data.Data)
-				break
-			}
-		}
-		//block
-		inHash = block.PrevBlockHash
-
-		if block.IsGenBlock() {
-			f.Println("Completed block traversal but not found\n")
-			break
-		}
-	}
 
 	//Copy Origin Block struct then Paste Format of Json
 	block_doc, _ := json.MarshalIndent(bc.Blocks, "", " ") //BlockChain Blocks
@@ -67,26 +48,7 @@ func (bc *Blockchain) Run(str string) {
 	var Copychain []*Copy         // save the bytes slice for read
 	json.Unmarshal(b, &Copychain) // read Json file
 
-	//Compare To Data
-	//f.Printf("%t", CompareBlock(bc.Blocks, b))
-
 }
-
-/*
-func CompareBlock(a []byte, b []byte) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i, v := range a {
-		if v != b[i] {
-			return false
-		}
-	}
-
-	return true
-}
-*/
 
 //copy Struct
 type Copy struct {
