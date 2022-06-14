@@ -1,16 +1,19 @@
 package main
 
 import (
-	"BlockChain"
-	//"문법"
+	"BLC"
+	f "fmt"
 )
 
 func main() {
-	//변수와 상수 그리고 키워드
-	//문법.Var()
-	//타입변환
-	//문법.DataType()
-	//연산자
-	//문법.Operator()
-	BlockChain.Start()
+	bc := BLC.NewBlockchain()
+	bc.AddBlock("1번째 트랜잭션")
+	bc.AddBlock("2번째 트랜잭션")
+	for i, bc := range bc.Blocks {
+		f.Println("-------------------------------", i, "번째 블록 데이터 --------------------------------")
+		f.Printf("이전블록 해시    : %x\n", bc.PrevBlockHash)
+		f.Printf("데이터           : %s\n", bc.Data)
+		f.Printf("현재 블럭의 hash : %x\n", bc.Hash)
+		f.Println("-----------------------------------------------------------------------------------\n")
+	}
 }

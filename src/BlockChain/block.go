@@ -1,4 +1,4 @@
-package BlockChain
+package main
 
 import (
 	"bytes"
@@ -38,9 +38,9 @@ type Blockchain struct {
 	blocks []*Block
 }
 
-//블록 기능 추가
+//블록 추가
 func (bc *Blockchain) AddBlock(data string) {
-	prevBlock := bc.blocks[len(bc.blocks)-1]   //이전 블록의 길이 -1
+	prevBlock := bc.blocks[len(bc.blocks)-1]   //총 블록의 길이 -1
 	newBlock := NewBlock(data, prevBlock.Hash) //새로운 블럭의 데이터와 이전 해쉬값
 	bc.blocks = append(bc.blocks, newBlock)    //blocks 배열에 저장
 }
@@ -55,7 +55,7 @@ func NewBlockchain() *Blockchain {
 	return &Blockchain{[]*Block{NewGenesisBlock()}}
 }
 
-func Start() {
+func main() {
 	bc := NewBlockchain()
 
 	bc.AddBlock("Send 1 BTC to Ivan")
