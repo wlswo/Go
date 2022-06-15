@@ -3,7 +3,7 @@ package BLC
 type Blockchain struct {
 	Blocks []*Block
 }
-
+[]
 func (blockchain *Blockchain) AddBlock(data string) {
 	//------------------------------
 	// 채우기
@@ -16,9 +16,9 @@ func (blockchain *Blockchain) AddBlock(data string) {
 	//새로운 블록생성 넘길값 data , prevBlockHash
 	newBlock := NewBlock(data, prevBlock.Hash)
 	blockchain.Blocks = append(blockchain.Blocks, newBlock)
-
 }
 
 func NewBlockchain() *Blockchain {
 	return &Blockchain{[]*Block{NewGenesisBlock()}}
 }
+

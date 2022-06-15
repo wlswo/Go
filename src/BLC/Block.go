@@ -1,7 +1,10 @@
 package BLC
 
 import (
+	"bytes"
 	"crypto/sha256"
+	f "fmt"
+	"math/rand"
 	"strconv"
 	"time"
 )
@@ -12,6 +15,21 @@ type Block struct {
 	Timestamp     int64  //만들어진 시각
 	Nonce         int    //난수
 	Data          []byte //<---- 나중에 확장하기 MT/MR
+	Bits          int    //Targetbits
+	Pow           []byte //Hash from Pow
+	Height        int
+}
+
+func (bc *Block) BPrint(i int) {
+	f.Println("-------------------------------", i, "번째 블록 데이터 -------------------------------")
+	f.Printf("Prev Hash    	 : %x\n", bc.PrevBlockHash)
+	f.Printf("Data             : %s\n", bc.Data)
+	f.Printf("hash 		 : %x\n", bc.Hash)
+	f.Printf("TimeStamp   	 : %d\n", bc.Timestamp)
+	f.Printf("Nonce 		 : %d\n", bc.Nonce)
+	f.Printf("bits		 : %d\n", bc.Bits)
+	f.Printf("Height 	 	 : %d\n", bc.Height)
+	f.Println("-------------------------------------------------------------------------------------\n")
 }
 
 func (block *Block) setHash() {
@@ -22,6 +40,7 @@ func (block *Block) setHash() {
 	//현재 블록의 해시값 = timeBytes + PrevBlockHash + Data 를 합친 값
 	var blockBytes []byte
 	blockBytes = append(timeBytes, block.PrevBlockHash...)
+	blockBytes = append(blockBytes, block.Pow...)
 	blockBytes = append(blockBytes, block.Data...)
 	// 		↳--------------↴
 	hash := sha256.Sum256(blockBytes)
@@ -29,8 +48,9 @@ func (block *Block) setHash() {
 
 }
 
-func NewBlock(data string, prevBlockHash []byte) *Block {
+var Height = 0
 
+func NewBlock(data string, prevBlockHash []byte) *Block {
 	block := &Block{}
 
 	//만들어진 시각 , 이전 블록의 해시값 , 블록의 데이터
@@ -41,14 +61,41 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 	//sethash
 	block.setHash()
 
+	block.Bits = rand.Intn(10)
 	pow := newProofOfWork(block)
 	nonce, hash := pow.Run()
-	block.Hash = hash[:]
+	block.Pow = hash[:]
 	block.Nonce = nonce
-
+	block.Height = Height
+	Height++
 	return block
 }
 
 func NewGenesisBlock() *Block {
 	return NewBlock("Genesis Block", []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+}
+
+//해시값의 체이닝 여부
+func (b *Block) EqualHash(e []byte) bool {
+	return bytes.Equal(b.Hash, e)
+}
+
+//Data의 정합성 여부
+func (b *Block) EqualData(e []byte) bool {
+	return bytes.Equal(b.Data, e)
+}
+
+//블록찾기
+func (bc *Blockchain) FindBlock(id []byte) *Block {
+	for _, v := range bc.Blocks {
+		if v.EqualHash(id) {
+			return v
+		}
+	}
+	return nil
+}
+
+func (b *Block) IsGenBlock() bool {
+	return bytes.Equal(b.PrevBlockHash, make([]byte, len(b.PrevBlockHash)))
+
 }
