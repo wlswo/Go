@@ -1,4 +1,4 @@
-package BLC
+package Project
 
 import (
 	"bytes"
@@ -32,8 +32,8 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	var hashInt big.Int
 	var hash [32]byte
 	nonce := 0
-	for nonce < maxNonce {
 
+	for nonce < maxNonce {
 		data := pow.prepareData(nonce)
 		hash = sha256.Sum256(data)
 		hashInt.SetBytes(hash[:])

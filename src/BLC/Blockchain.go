@@ -1,9 +1,9 @@
 package BLC
 
 type Blockchain struct {
-	Blocks []*Block
+	Blocks []*Block `json:"Blocks`
 }
-[]
+
 func (blockchain *Blockchain) AddBlock(data string) {
 	//------------------------------
 	// 채우기
@@ -21,4 +21,3 @@ func (blockchain *Blockchain) AddBlock(data string) {
 func NewBlockchain() *Blockchain {
 	return &Blockchain{[]*Block{NewGenesisBlock()}}
 }
-

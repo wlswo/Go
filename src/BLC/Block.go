@@ -10,22 +10,22 @@ import (
 )
 
 type Block struct {
-	Hash          []byte //현재 블록의 해쉬배열
-	PrevBlockHash []byte //이전 해쉬값
-	Timestamp     int64  //만들어진 시각
-	Nonce         int    //난수
-	Data          []byte //<---- 나중에 확장하기 MT/MR
-	Bits          int    //Targetbits
-	Pow           []byte //Hash from Pow
-	Height        int
+	Hash          []byte `json:"Hash"`          //Current Hash
+	PrevBlockHash []byte `json:"PrevBlockHash"` //Previous Hash
+	Timestamp     int64  `json:"Timestamp"`     //Block was create To Time
+	Nonce         int    `json:"Nonce"`         //Random Num that have Ordering
+	Data          []byte `json:"Data"`          //<---- 나중에 확장하기 MT/MR
+	Bits          int    `json:"Bits"`          //Targetbits
+	Pow           []byte `json:"Pow"`           //Hash from Pow
+	Height        int    `json:"Height"`        //Block Height
 }
 
 func (bc *Block) BPrint(i int) {
-	f.Println("-------------------------------", i, "번째 블록 데이터 -------------------------------")
+	f.Println("-------------------------------", i, "번째 블록 데이터 ---------------------------------")
 	f.Printf("Prev Hash    	 : %x\n", bc.PrevBlockHash)
 	f.Printf("Data             : %s\n", bc.Data)
 	f.Printf("hash 		 : %x\n", bc.Hash)
-	f.Printf("TimeStamp   	 : %d\n", bc.Timestamp)
+	f.Println("TimeStamp 	 :", time.Unix(bc.Timestamp, 0))
 	f.Printf("Nonce 		 : %d\n", bc.Nonce)
 	f.Printf("bits		 : %d\n", bc.Bits)
 	f.Printf("Height 	 	 : %d\n", bc.Height)
