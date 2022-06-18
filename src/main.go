@@ -2,9 +2,15 @@ package main
 
 import (
 	"Project"
+	"fmt"
 )
 
 func main() {
-	//BLC.Run()
-	Project.Run()
+
+	wallet := Project.NewWallet()
+	address := wallet.GetAddress()
+
+	fmt.Println(Project.ValidateAddress(address))
+	fmt.Println(address)
+
 }
