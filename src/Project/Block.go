@@ -14,36 +14,47 @@ type Block struct {
 	PrevBlockHash []byte `json:"PrevBlockHash"` //Previous Hash
 	Timestamp     int64  `json:"Timestamp"`     //Block was create To Time
 	Nonce         int    `json:"Nonce"`         //Random Num that have Ordering
-	Data          Tx     `json:"Data"`          //<---- 나중에 확장하기 MT/MR
-	Bits          int    `json:"Bits"`          //Targetbits
-	Pow           []byte `json:"Pow"`           //Hash from Pow
-	Height        int    `json:"Height"`        //Block Height
+	Data          struct {
+		TxID      []byte //sha256(Data + TimeStamp + Nonce)
+		Data      []byte //Do what
+		Nonce     int    //Random Num that have Ordering
+		TimeStamp int64  //Do job Time
+		Sign      []byte //Sign Only Master
+	}
+	Bits   int    `json:"Bits"`   //Targetbits
+	Pow    []byte `json:"Pow"`    //Hash from Pow
+	Height int    `json:"Height"` //Block Height
 }
 
 type Tx struct {
-	TxID      []byte //sha256(Data + TimeStamp + Nonce)
-	Data      []byte //Do what
-	Nonce     int    //Random Num that have Ordering
-	TimeStamp int64  //Do job Time
-	Sign      []byte //Sign Only Master
 }
 
 func (bc *Block) BPrint(i int) {
 	f.Println("-------------------------------", i, "번째 블록 데이터 ---------------------------------")
 	f.Printf("Prev Hash    	 : %x\n", bc.PrevBlockHash)
-	f.Printf("Data             : %s\n", bc.Data)
-	f.Printf("hash 		 : %x\n", bc.Hash)
 	f.Println("TimeStamp 	 :", time.Unix(bc.Timestamp, 0))
 	f.Printf("Nonce 		 : %d\n", bc.Nonce)
 	f.Printf("bits		 : %d\n", bc.Bits)
+	f.Printf("hash 		 : %x\n", bc.Hash)
 	f.Printf("Height 	 	 : %d\n", bc.Height)
+	f.Println("Transaction  { 	 ")
+	f.Printf("	TxID	:  %x\n", bc.Data.TxID)
+	f.Printf("	Data	:  %s\n", bc.Data.Data)
+	f.Printf("	Nonce	:  %d\n", bc.Data.Nonce)
+	f.Println("	TimeStamp : ", time.Unix(bc.Data.TimeStamp, 0))
+	f.Printf("	Sign	:  %x\n", bc.Data.Sign)
+	f.Println("} ")
 	f.Println("-------------------------------------------------------------------------------------\n")
 }
 
-func (block *Block) setTx() {
+func (block *Block) setTx(data string) {
+	block.Data.Data = []byte(data)
+
 	timestamp := strconv.FormatInt(block.Timestamp, 10)
 	timeBytes := []byte(timestamp)
-	Nonce := strconv.FormatInt(block.Data.Nonce, 64)
+	block.Data.TimeStamp = time.Now().Unix()
+
+	Nonce := strconv.Itoa(block.Data.Nonce)
 	NonceBytes := []byte(Nonce)
 
 	var blockBytes []byte
@@ -52,7 +63,8 @@ func (block *Block) setTx() {
 	blockBytes = append(blockBytes, block.Data.Data...)
 	// 		↳--------------↴
 	hash := sha256.Sum256(blockBytes)
-	block.Hash = hash[:]
+	block.Data.TxID = hash[:]
+	block.Data.Sign = hash[:]
 }
 
 func (block *Block) setHash() {
@@ -84,13 +96,14 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 	block.setHash()
 
 	//setTx
-	block.setTx()
+	block.setTx(data)
 
 	block.Bits = rand.Intn(10)
 	pow := newProofOfWork(block)
 	nonce, hash := pow.Run()
 	block.Pow = hash[:]
 	block.Nonce = nonce
+	block.Data.Nonce = nonce
 	block.Height = Height
 	Height++
 	return block
@@ -107,7 +120,7 @@ func (b *Block) EqualHash(e []byte) bool {
 
 //Data의 정합성 여부
 func (b *Block) EqualData(e []byte) bool {
-	return bytes.Equal(b.Data, e)
+	return bytes.Equal(b.Data.Data, e)
 }
 
 //블록찾기

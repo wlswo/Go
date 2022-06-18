@@ -38,7 +38,7 @@ func Run() {
 		if block != nil {
 			if v.EqualData(request) {
 				f.Println("found")
-				f.Printf("%s\n", v.Data)
+				f.Printf("%s\n", v.Data.Data)
 				break
 			}
 		}
