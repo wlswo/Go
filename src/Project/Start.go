@@ -17,7 +17,7 @@ func Run() {
 
 	for i := 0; i < 100; i++ {
 		idx := strconv.Itoa(rand.Intn(1000))
-		bc.AddBlock(idx)
+		bc.AddBlock("누가 무엇을 조작" + idx)
 	}
 
 	for i, bc := range bc.Blocks {
