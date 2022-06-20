@@ -13,4 +13,5 @@ func main() {
 	fmt.Println(Project.ValidateAddress(address))
 	fmt.Println(address)
 
+	Project.Run()
 }
