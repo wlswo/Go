@@ -15,11 +15,11 @@ type Block struct {
 	Timestamp     int64  `json:"Timestamp"`     //Block was create To Time
 	Nonce         int    `json:"Nonce"`         //Random Num that have Ordering
 	Data          struct {
-		TxID      []byte //sha256(Data + TimeStamp + Nonce)
-		Data      []byte //Do what
-		Nonce     int    //Random Num that have Ordering
-		TimeStamp int64  //Do job Time
-		Sign      []byte //Sign Only Master
+		TxID      []byte `json:"TxID"`      //sha256(Data + TimeStamp + Nonce)
+		Data      []byte `json:"Data"`      //Do what
+		Nonce     int    `json:"Nonce"`     //Random Num that have Ordering
+		TimeStamp int64  `json:"TimeStamp"` //Do job Time
+		Sign      []byte `json:"Sign"`      //Sign Only Master
 	}
 	Bits   int    `json:"Bits"`   //Targetbits
 	Pow    []byte `json:"Pow"`    //Hash from Pow

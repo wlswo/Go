@@ -60,7 +60,7 @@ func Run() {
 		return
 	}
 
-	b, err := ioutil.ReadFile("./blockFile.json")
+	b, err := ioutil.ReadFile("blockFile.json")
 
 	if err != nil {
 		f.Println(err)
@@ -97,8 +97,14 @@ type Copy struct {
 	PrevBlockHash []byte `json:"PrevBlockHash"` //Previous Hash
 	Timestamp     int64  `json:"Timestamp"`     //Block was create To Time
 	Nonce         int    `json:"Nonce"`         //Random Num that have Ordering
-	Data          []byte `json:"Data"`          //After Add To need MT/MR
-	Bits          int    `json:"Bits"`          //Targetbits
-	Pow           []byte `json:"Pow"`           //Hash from Pow
-	Height        int    `json:"Height"`        //Block Height
+	Data          struct {
+		TxID      []byte `json:"TxID"`      //sha256(Data + TimeStamp + Nonce)
+		Data      []byte `json:"Data"`      //Do what
+		Nonce     int    `json:"Nonce"`     //Random Num that have Ordering
+		TimeStamp int64  `json:"TimeStamp"` //Do job Time
+		Sign      []byte `json:"Sign"`      //Sign Only Master
+	}
+	Bits   int    `json:"Bits"`   //Targetbits
+	Pow    []byte `json:"Pow"`    //Hash from Pow
+	Height int    `json:"Height"` //Block Height
 }
