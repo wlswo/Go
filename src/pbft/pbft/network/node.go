@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+//노드 구조체
 type Node struct {
 	NodeID        string
 	NodeTable     map[string]string // key=nodeID, value=url
@@ -33,7 +34,7 @@ type View struct {
 }
 
 const ResolvingTimeDuration = time.Millisecond * 1000 // 1 second.
-
+//nodeId를 받아 Node 를 리턴
 func NewNode(nodeID string) *Node {
 	const viewID = 10000000000 // temporary.
 
@@ -52,7 +53,7 @@ func NewNode(nodeID string) *Node {
 			Primary: "P1",
 		},
 
-		// Consensus-related struct
+		//합의 관계 구조
 		CurrentState:  nil,
 		CommittedMsgs: make([]*consensus.RequestMsg, 0),
 		MsgBuffer: &MsgBuffer{
@@ -80,11 +81,13 @@ func NewNode(nodeID string) *Node {
 	return node
 }
 
+//리더 노드가 클라이언트 한테 받은 요청을 브로드캐스트해준다.
 func (node *Node) Broadcast(msg interface{}, path string) map[string]error {
 	errorMap := make(map[string]error)
 
+	//모든 노드 에게 뿌려저야하므로
 	for nodeID, url := range node.NodeTable {
-		if nodeID == node.NodeID {
+		if nodeID == node.NodeID { //자기 자신을 제외한
 			continue
 		}
 
@@ -93,7 +96,7 @@ func (node *Node) Broadcast(msg interface{}, path string) map[string]error {
 			errorMap[nodeID] = err
 			continue
 		}
-
+		//url+path 와 msg 를 전송
 		send(url+path, jsonMsg)
 	}
 
@@ -104,8 +107,10 @@ func (node *Node) Broadcast(msg interface{}, path string) map[string]error {
 	}
 }
 
+//응답의 수가 과반수이면 답장을 해줌
 func (node *Node) Reply(msg *consensus.ReplyMsg) error {
 	// Print all committed messages.
+	// 최종 확인 메세지
 	for _, value := range node.CommittedMsgs {
 		fmt.Printf("Committed value: %s, %d, %s, %d", value.ClientID, value.Timestamp, value.Operation, value.SequenceID)
 	}
@@ -124,16 +129,19 @@ func (node *Node) Reply(msg *consensus.ReplyMsg) error {
 
 // GetReq can be called when the node's CurrentState is nil.
 // Consensus start procedure for the Primary.
+// 요청을 받으면 합의를 시작
 func (node *Node) GetReq(reqMsg *consensus.RequestMsg) error {
 	LogMsg(reqMsg)
 
 	// Create a new state for the new consensus.
+	// 요청을 받은 노드의 상태를 합의 상태로 전환 한다.
 	err := node.createStateForNewConsensus()
 	if err != nil {
 		return err
 	}
 
 	// Start the consensus process.
+	// 합의 과정 시작
 	prePrepareMsg, err := node.CurrentState.StartConsensus(reqMsg)
 	if err != nil {
 		return err

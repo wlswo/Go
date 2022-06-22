@@ -7,7 +7,6 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"time"
-​
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/google/go-cmp/cmp"
 	"golang.org/x/crypto/ripemd160"
@@ -52,7 +51,7 @@ func NewWallets(privKey *ecdsa.PrivateKey, pubKey []byte, addr string) *Wallets 
 ​*/
 func NewWallets() (*Wallets, error){
 	wallets := Wallets{}
-	wallet.Wallets = make(map[string]*Wallet)
+	wallets.Wallets = make(map[string]*Wallet)
 	return &wallets, err
 }
 

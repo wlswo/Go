@@ -10,15 +10,12 @@ import (
 	"time"
 )
 
-func Run() {
+func (bc *Blockchain) Run(str string) {
 	// 블록체인 생성
 	// 리턴값은 BlockChain 구조체의 주소를 반환
-	bc := NewBlockchain()
+	//bc := NewBlockchain()
 
-	for i := 0; i < 100; i++ {
-		idx := strconv.Itoa(rand.Intn(1000))
-		bc.AddBlock("누가 무엇을 조작" + idx)
-	}
+	bc.AddBlock(str)
 
 	for i, bc := range bc.Blocks {
 		bc.BPrint(i)
