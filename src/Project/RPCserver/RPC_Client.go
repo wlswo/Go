@@ -20,7 +20,7 @@ type Wallet struct {
 
 func main() {
 	gob.Register(elliptic.P256())
-	client, err := rpc.Dial("tcp", "localhost:6000")
+	client, err := rpc.Dial("tcp", ":6000")
 	if err != nil {
 		f.Println(err)
 		return

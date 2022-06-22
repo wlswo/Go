@@ -52,12 +52,12 @@ func (c Calc) Get(args Args, reply *Wallet) error {
 	//지갑 추가
 	W.AddWallet(reply.Timestamp, reply.Address, private, public)
 	//지갑 추가 확인
-	/*
-		for _, v := range w.Wallets {
-			f.Printf("%d\n", v.Timestamp)
-			f.Printf("%s\n", v.Address)
-			f.Printf("%x\n", v.PrivateKey)
-		}*/
+
+	for _, v := range W.Wallets {
+		f.Printf("%d\n", v.Timestamp)
+		f.Printf("%s\n", v.Address)
+		f.Printf("%x\n", v.PrivateKey)
+	}
 	f.Println(len(W.Wallets))
 
 	return nil
@@ -67,6 +67,7 @@ func main() {
 
 	gob.Register(elliptic.P256())
 	rpc.Register(new(Calc))
+
 	ln, err := net.Listen("tcp", ":6000")
 	if err != nil {
 		f.Println(err)
