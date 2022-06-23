@@ -11,8 +11,6 @@ var (
 	maxNonce = math.MaxInt64
 )
 
-// const targetBites :=  4
-
 type ProofOfWork struct {
 	block  *Block
 	target *big.Int
@@ -21,7 +19,7 @@ type ProofOfWork struct {
 func (pow *ProofOfWork) prepareData(nonce int) []byte {
 	data := bytes.Join([][]byte{
 		pow.block.PrevBlockHash,
-		pow.block.Data.Data,
+		pow.block.TxID,
 		IntToHex(pow.block.Timestamp),
 		IntToHex(int64(pow.block.Bits)),
 		IntToHex(int64(nonce)),
