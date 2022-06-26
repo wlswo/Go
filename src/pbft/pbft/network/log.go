@@ -22,9 +22,9 @@ func LogMsg(msg interface{}) {
 		}
 	}
 }
-
+//false 일때 BEGIN 
 func LogStage(stage string, isDone bool) {
-	if isDone {
+	if isDone { 
 		fmt.Printf("[STAGE-DONE] %s\n", stage)
 	} else {
 		fmt.Printf("[STAGE-BEGIN] %s\n", stage)

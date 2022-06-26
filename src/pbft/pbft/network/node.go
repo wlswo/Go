@@ -123,7 +123,6 @@ func (node *Node) Reply(msg *consensus.ReplyMsg) error {
 
 	// Client가 없으므로, 일단 Primary에게 보내는 걸로 처리.
 	send(node.NodeTable[node.View.Primary]+"/reply", jsonMsg)
-
 	return nil
 }
 
@@ -153,6 +152,15 @@ func (node *Node) GetReq(reqMsg *consensus.RequestMsg) error {
 	if prePrepareMsg != nil {
 		node.Broadcast(prePrepareMsg, "/preprepare")
 		LogStage("Pre-prepare", true)
+
+		//초기화
+		node.CurrentState = nil
+		node.CommittedMsgs = nil
+		node.MsgBuffer.ReqMsgs = node.MsgBuffer.ReqMsgs[0:]
+		node.MsgBuffer.PrePrepareMsgs = node.MsgBuffer.PrePrepareMsgs[0:]
+		node.MsgBuffer.PrepareMsgs = node.MsgBuffer.PrepareMsgs[0:]
+		node.MsgBuffer.CommitMsgs = node.MsgBuffer.CommitMsgs[0:]
+
 	}
 
 	return nil
