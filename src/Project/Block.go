@@ -3,6 +3,7 @@ package Project
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/json"
 	f "fmt"
 	"math/rand"
 	"strconv"
@@ -14,19 +15,10 @@ type Block struct {
 	PrevBlockHash []byte `json:"PrevBlockHash"` //Previous Hash
 	Timestamp     int64  `json:"Timestamp"`     //Block was create To Time
 	Nonce         int    `json:"Nonce"`         //Random Num that have Ordering
-	Data          struct {
-		TxID      []byte `json:"TxID"`      //sha256(Data + TimeStamp + Nonce)
-		Data      []byte `json:"Data"`      //Do what
-		Nonce     int    `json:"Nonce"`     //Random Num that have Ordering
-		TimeStamp int64  `json:"TimeStamp"` //Do job Time
-		Sign      []byte `json:"Sign"`      //Sign Only Master
-	}
-	Bits   int    `json:"Bits"`   //Targetbits
-	Pow    []byte `json:"Pow"`    //Hash from Pow
-	Height int    `json:"Height"` //Block Height
-}
-
-type Tx struct {
+	TxID          []byte `json:"TxID"`          //sha256(Data + TimeStamp + Nonce)
+	Bits          int    `json:"Bits"`          //Targetbits
+	Pow           []byte `json:"Pow"`           //Hash from Pow
+	Height        int    `json:"Height"`        //Block Height
 }
 
 func (bc *Block) BPrint(i int) {
@@ -37,37 +29,11 @@ func (bc *Block) BPrint(i int) {
 	f.Printf("bits		 : %d\n", bc.Bits)
 	f.Printf("hash 		 : %x\n", bc.Hash)
 	f.Printf("Height 	 	 : %d\n", bc.Height)
-	f.Println("Transaction  { 	 ")
-	f.Printf("	TxID	:  %x\n", bc.Data.TxID)
-	f.Printf("	Data	:  %s\n", bc.Data.Data)
-	f.Printf("	Nonce	:  %d\n", bc.Data.Nonce)
-	f.Println("	TimeStamp : ", time.Unix(bc.Data.TimeStamp, 0))
-	f.Printf("	Sign	:  %x\n", bc.Data.Sign)
-	f.Println("} ")
+	f.Printf("TxID		:  %x\n", bc.TxID)
 	f.Println("-------------------------------------------------------------------------------------\n")
 }
 
-func (block *Block) setTx(data string) {
-	block.Data.Data = []byte(data)
-
-	timestamp := strconv.FormatInt(block.Timestamp, 10)
-	timeBytes := []byte(timestamp)
-	block.Data.TimeStamp = time.Now().Unix()
-
-	Nonce := strconv.Itoa(block.Data.Nonce)
-	NonceBytes := []byte(Nonce)
-
-	var blockBytes []byte
-	blockBytes = append(timeBytes, block.Data.Data...)
-	blockBytes = append(blockBytes, NonceBytes...)
-	blockBytes = append(blockBytes, block.Data.Data...)
-	// 		↳--------------↴
-	hash := sha256.Sum256(blockBytes)
-	block.Data.TxID = hash[:]
-	block.Data.Sign = hash[:]
-}
-
-func (block *Block) setHash() {
+func (block *Block) setHash(TxID []byte) {
 
 	timestamp := strconv.FormatInt(block.Timestamp, 10)
 	timeBytes := []byte(timestamp)
@@ -76,7 +42,7 @@ func (block *Block) setHash() {
 	var blockBytes []byte
 	blockBytes = append(timeBytes, block.PrevBlockHash...)
 	blockBytes = append(blockBytes, block.Pow...)
-	blockBytes = append(blockBytes, block.Data.Data...)
+	blockBytes = append(blockBytes, TxID...)
 	// 		↳--------------↴
 	hash := sha256.Sum256(blockBytes)
 	block.Hash = hash[:]
@@ -85,32 +51,31 @@ func (block *Block) setHash() {
 
 var Height = 0
 
-func NewBlock(data string, prevBlockHash []byte) *Block {
+func NewBlock(TxID []byte, prevBlockHash []byte) *Block {
 	block := &Block{}
 
 	//만들어진 시각 , 이전 블록의 해시값 , 블록의 데이터
 	block.Timestamp = time.Now().Unix()
 	block.PrevBlockHash = prevBlockHash
 
-	//sethash
-	block.setHash()
-
-	//setTx
-	block.setTx(data)
+	//Block 정보 세팅
+	block.setHash(TxID)
 
 	block.Bits = rand.Intn(10)
 	pow := newProofOfWork(block)
 	nonce, hash := pow.Run()
 	block.Pow = hash[:]
 	block.Nonce = nonce
-	block.Data.Nonce = nonce
+	block.TxID = TxID
 	block.Height = Height
 	Height++
 	return block
 }
 
 func NewGenesisBlock() *Block {
-	return NewBlock("Genesis Block", []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+	Tx := &Data{"Genesis Block", "Genesis Block", "Genesis Block", "Genesis Block"}
+	bytes, _ := json.Marshal(Tx)
+	return NewBlock(bytes, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 }
 
 //해시값의 체이닝 여부
@@ -120,7 +85,7 @@ func (b *Block) EqualHash(e []byte) bool {
 
 //Data의 정합성 여부
 func (b *Block) EqualData(e []byte) bool {
-	return bytes.Equal(b.Data.Data, e)
+	return bytes.Equal(b.TxID, e)
 }
 
 //블록찾기
