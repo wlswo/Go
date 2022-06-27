@@ -5,8 +5,6 @@ type Blockchain struct {
 }
 
 func (blockchain *Blockchain) AddBlock(TxID []byte) {
-	// AddBlock 이 처리되는 로직순서
-	// NewBlock() (block 리턴)  -> BlockChain 구조체에 저장
 
 	//이전 블록 take
 	prevBlock := blockchain.Blocks[len(blockchain.Blocks)-1]
