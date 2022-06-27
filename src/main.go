@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
-	Project.StartServer()
+	go Project.StartTxServer()
+	Project.StartBCServer()
 
 }
