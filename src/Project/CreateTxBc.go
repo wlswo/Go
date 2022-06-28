@@ -30,11 +30,6 @@ func (bc *Blockchain) CreateBc(data []byte) {
 
 	//블록 생성 , 블록 추가
 	bc.AddBlock(data)
-	/*
-		for i, bc := range bc.Blocks {
-			bc.BPrint(i)
-		}
-	*/
 
 	//Copy Origin Block struct then Paste Format of Json
 	block_doc, _ := json.MarshalIndent(bc.Blocks, "", " ") //BlockChain Blocks

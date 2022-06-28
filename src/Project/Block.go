@@ -21,8 +21,8 @@ type Block struct {
 	Height        int    `json:"Height"`        //Block Height
 }
 
-func (bc *Block) BPrint(i int) {
-	f.Println("-------------------------------", i, "번째 블록 데이터 ---------------------------------")
+func (bc *Block) BPrint() {
+	f.Println("-------------------------------보낸 블록 데이터 ---------------------------------")
 	f.Printf("Prev Hash    	 : %x\n", bc.PrevBlockHash)
 	f.Println("TimeStamp 	 :", time.Unix(bc.Timestamp, 0))
 	f.Printf("Nonce 		 : %d\n", bc.Nonce)

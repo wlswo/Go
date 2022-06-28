@@ -53,6 +53,20 @@ func NewTranscation(data []byte) *Tx {
 	//Tx.Sign = hash[:]
 	return Tx
 }
+
+//트랜잭션 조회
+func (txs *Txs) Find_tx(UserID string) *Txs {
+	UserTxs := &Txs{}
+	for _, v := range txs.Txs {
+		if v.UserID == UserID {
+			UserTxs.Txs = append(UserTxs.Txs, v)
+		}
+	}
+
+	return UserTxs
+
+}
+
 func (tx *Tx) TPrint(i int) {
 	f.Println("-------------------------------", i, "번째 트랜잭션 ---------------------------------")
 	f.Printf("TxID    	 : %x\n", tx.TxID)
