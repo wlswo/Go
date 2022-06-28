@@ -2,6 +2,8 @@ package Project
 
 import (
 	b "bytes"
+	//"encoding/json"
+	f "fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -17,7 +19,7 @@ func StartTxServer() {
 	//서버 키면 트랜잭션 구조체 생성
 	txs := New_Transaction_Struct()
 
-	// localhsot:80/test 에 접속시
+	// localhsot:81/create_tx 에 접속시
 	http.HandleFunc("/create_tx", func(res http.ResponseWriter, req *http.Request) {
 
 		respBody, err := ioutil.ReadAll(req.Body)
@@ -26,7 +28,7 @@ func StartTxServer() {
 			txs.CreateTx(bytes) //트랜잭션 생성
 		}
 
-		//생성된 트랜잭션의 TxID를 인자값으로 전달
+		//생성된 트랜잭션의 TxID를 인자값으로 전달 -> 최상위 트랜잭션
 		Tx := txs.Txs[len(txs.Txs)-1]
 		// //Tx.TxID 만 넘기기
 		//TxFile, _ := ioutil.ReadFile("TxFile.json") //file read
@@ -46,6 +48,39 @@ func StartTxServer() {
 		if err == nil {
 			str := string(respBody)
 			println(str)
+		}
+
+		//res.Write([]byte(b)) //웹 브라우저에 응답
+	})
+
+	//http://localhost:81/find_tx 접속시 받는값은 UserID
+	http.HandleFunc("/find_tx", func(res http.ResponseWriter, req *http.Request) {
+
+		respBody, err := ioutil.ReadAll(req.Body)
+		if err == nil {
+			UserID := string(respBody)
+			UserTxs := txs.Find_tx(UserID) //트랜잭션 조회
+			//구조체 마샬
+			//bytes, _ := json.Marshal(UserTxs)
+			//buff := b.NewBuffer(bytes)
+
+			for _, v := range UserTxs.Txs {
+				f.Printf("TxID : %x\n", v.TxID)
+				f.Printf("UserId : %s\n", v.UserID)
+			}
+			//트랜잭션 조회 결과를 반환
+			// resp, err := http.Post("http://localhost:80/finded_tx", "application/json", buff)
+
+			// if err != nil {
+			// 	panic(err)
+			// }
+			// defer resp.Body.Close()
+
+			// respBody, err = ioutil.ReadAll(resp.Body)
+			// if err == nil {
+			// 	str := string(respBody)
+			// 	println(str)
+			// }
 		}
 
 		//res.Write([]byte(b)) //웹 브라우저에 응답
