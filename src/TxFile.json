@@ -1,106 +1,10 @@
 [
  {
-  "TxID": "ohvnUGqo4H7FgsLUY90UFpHZIXHeNRhgd9ugkOgQ1iM=",
-  "TimeStamp": 1656321732,
+  "TxID": "5yx2kGqsQSdHUSCRK7uftjPLwhS4+W0ctEJ5a1yZ3D4=",
+  "TimeStamp": 1656399537,
   "UserID": "aaa",
   "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "3CuAr3FSvKitlzo2bFlzeizofY55/+/f9ZAOGVPlRu4=",
-  "TimeStamp": 1656321747,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "bGVR2Qsm5XoHurwrCkRHuNfgoO6h05JCY/TKbIKZ4Sw=",
-  "TimeStamp": 1656321749,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "2Scx9xRV4q3muA2cmA3+NKQqBgRMC5osgisXxv0LurA=",
-  "TimeStamp": 1656321751,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "jwyrj2lsVZrWu9fTT0CvSe1vw9G9H0Gm/52G+l7BMcM=",
-  "TimeStamp": 1656321754,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "Db3Td/h4i78euE1D7LqOaaPyxXK1q5yXEyKr6IF4OhQ=",
-  "TimeStamp": 1656321780,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "JSl7Pz9PtUjs3PUX8unxzBC9qjUcQjd+15w/HeMuZ1Y=",
-  "TimeStamp": 1656321782,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "lIAsjaSPp5qwo/tSHRnphnEadxozTjFnzbPw0qw9iCQ=",
-  "TimeStamp": 1656321788,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "QxhDga0tObkHgMYCPo0sjTbgdAXGhiHKS58dzVm7NzI=",
-  "TimeStamp": 1656321790,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "Hnhdr+HHfYGZ1IYjP5flldAf784cM7ibJkGJEEp1KIY=",
-  "TimeStamp": 1656321792,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "88wEP4HpK1ADgoC969bJf7jnHYhPKXArwplIjovmQ/Y=",
-  "TimeStamp": 1656321793,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "bZ/w+l85l4TvHRBOxSVvg4X4JYZ2NX5abys5u8yVV6g=",
-  "TimeStamp": 1656321795,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
-  "Ctype": "A타입 게시글"
- },
- {
-  "TxID": "VmVcppYu07VwKMsq/9H88VdBVdlACviMPALrzLZflEA=",
-  "TimeStamp": 1656321797,
-  "UserID": "aaa",
-  "LogDB": "walletDB",
-  "Content": "A가 B를 수정",
+  "Content": "A가 B를 수정2",
   "Ctype": "A타입 게시글"
  }
 ]
