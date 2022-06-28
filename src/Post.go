@@ -2,7 +2,7 @@ package main
 
 import (
 	b "bytes"
-	"encoding/json"
+	//"encoding/json"
 	"io/ioutil"
 	"net/http"
 )
@@ -16,16 +16,15 @@ type Data struct {
 
 func main() {
 
-	data := Data{"aaa", "walletDB", "A가 B를 수정", "A타입 게시글"}
+	//data := Data{"aaa", "walletDB", "A가 B를 수정2", "A타입 게시글"}
 
 	//마샬링
-	bytes, _ := json.Marshal(data)
-	buff := b.NewBuffer(bytes)
+	//bytes, _ := json.Marshal(data)
+	buff := b.NewBuffer([]byte("aaa"))
 	// 1. http://localhost:81/create_tx 주소로 요청
 	// 2. application/json 포맷으로
 	// 3. buff 데이터를
-
-	resp, err := http.Post("http://localhost:81/create_tx", "application/json", buff)
+	resp, err := http.Post("http://localhost:81/find_tx", "text/plane", buff)
 
 	if err != nil {
 		panic(err)
