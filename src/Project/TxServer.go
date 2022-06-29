@@ -12,7 +12,7 @@ type Data struct {
 	UserID  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
 	LogDB   string `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
-	Ctype   string `json:"Ctype"`   //Content Type
+	Sign    string `json:"Sign"`    //Content Type
 }
 
 func StartTxServer() {
@@ -68,7 +68,7 @@ func StartTxServer() {
 				f.Printf("TxID : %x\n", v.TxID)
 				f.Printf("UserId : %s\n", v.UserID)
 			}
-			//트랜잭션 조회 결과를 반환
+			//트랜잭션 조회 결과를 Restful Api로 응답
 			// resp, err := http.Post("http://localhost:80/finded_tx", "application/json", buff)
 
 			// if err != nil {
