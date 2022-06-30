@@ -12,7 +12,9 @@ type Data struct {
 	UserID  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
 	LogDB   string `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
-	Sign    string `json:"Sign"`    //Content Type
+	RId     int64  `json:"RId"`     //Restaurant 번호
+	Sign    []byte `json:"Sign"`    //Id를 Hash + privKey로 암호화한 값
+	HashId  []byte `json:"HashId`   //Id를 Hash 한 값
 }
 
 func StartTxServer() {
@@ -30,13 +32,11 @@ func StartTxServer() {
 
 		//생성된 트랜잭션의 TxID를 인자값으로 전달 -> 최상위 트랜잭션
 		Tx := txs.Txs[len(txs.Txs)-1]
-		// //Tx.TxID 만 넘기기
-		//TxFile, _ := ioutil.ReadFile("TxFile.json") //file read
 
 		//Block 생성 서버에 TxID Post 전송
 		buff := b.NewBuffer(Tx.TxID)
 
-		resp, err := http.Post("http://localhost:80/create_bc", "text/plane", buff)
+		resp, err := http.Post("http://localhost:80/newblock", "text/plane", buff)
 
 		if err != nil {
 			panic(err)
@@ -50,7 +50,6 @@ func StartTxServer() {
 			println(str)
 		}
 
-		//res.Write([]byte(b)) //웹 브라우저에 응답
 	})
 
 	//http://localhost:81/find_tx 접속시 받는값은 UserID
