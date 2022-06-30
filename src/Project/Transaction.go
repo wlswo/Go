@@ -1,9 +1,12 @@
 package Project
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/sha256"
 	"encoding/json"
 	f "fmt"
+	"math/big"
 	"strconv"
 	"time"
 )
@@ -14,7 +17,7 @@ type Tx struct {
 	UserID    string `json:"UserID"`    //Tx 발생 시킨 유저 ID
 	LogDB     string `json:"LogDB"`     //LogDB 의 정보
 	Content   string `json:"Content"`   //Tx 내용
-	Ctype     string `json:"Ctype"`     //Content Type
+	RId       int64  `json:"Rid"`       //Content Type
 }
 
 type Txs struct {
@@ -67,13 +70,38 @@ func (txs *Txs) Find_tx(UserID string) *Txs {
 
 }
 
+//넘어온 데이터 검증
+func Verify(pubKey []byte, Sign []byte, hashid []byte) bool {
+	curve := elliptic.P256()
+
+	//서명 데이터 분할
+	r := big.Int{}
+	s := big.Int{}
+	siglen := len(Sign)
+	r.SetBytes(Sign[:(siglen / 2)])
+	s.SetBytes(Sign[(siglen / 2):])
+
+	//공개키 분할
+	x := big.Int{}
+	y := big.Int{}
+	keylen := len(pubKey)
+	x.SetBytes(pubKey[:(keylen / 2)])
+	y.SetBytes(pubKey[(keylen / 2):])
+
+	//공개키 찾기
+	rawPubKey := ecdsa.PublicKey{curve, &x, &y}
+
+	//찾은 공개키로 서명 검증
+	return ecdsa.Verify(&rawPubKey, hashid, &r, &s)
+}
+
 func (tx *Tx) TPrint(i int) {
 	f.Println("-------------------------------", i, "번째 트랜잭션 ---------------------------------")
-	f.Printf("TxID    	 : %x\n", tx.TxID)
-	f.Println("TimeStamp 	 :", time.Unix(tx.TimeStamp, 0))
-	f.Printf("UserID 		 : %s\n", tx.UserID)
-	f.Printf("LogDB		 : %s\n", tx.LogDB)
-	f.Printf("Content 	 : %s\n", tx.Content)
-	f.Printf("Ctype 	 	 : %s\n", tx.Ctype)
-	f.Println("-------------------------------------------------------------------------------------\n")
+	// f.Printf("TxID    	 : %x\n", tx.TxID)
+	// f.Println("TimeStamp 	 :", time.Unix(tx.TimeStamp, 0))
+	// f.Printf("UserID 		 : %s\n", tx.UserID)
+	// f.Printf("LogDB		 : %s\n", tx.LogDB)
+	// f.Printf("Content 	 : %s\n", tx.Content)
+	// f.Printf("Ctype 	 	 : %d\n", tx.RId)
+	// f.Println("-------------------------------------------------------------------------------------\n")
 }
