@@ -21,6 +21,8 @@ func main() {
 	hashid := Hash(UserId)
 	privKey, pubKey := GetKey()
 
+	//fmt.Printf("개인키 :%x\n", privKey.PublicKey)
+	//fmt.Printf("공개키 :%x\n", pubKey)
 	println()
 	sign := Sign(*privKey, hashid)
 
@@ -31,13 +33,17 @@ func main() {
 	bool := Verify(pubKey, sign, hashid)
 
 	fmt.Println("검증 결과 : ", bool)
-	fmt.Printf("aaa의 공개키 : %x", decode(data))
+	fmt.Printf("aaa의 공개키 : %x", data)
+	c := Sign(*privKey, []byte{1, 2, 3, 4, 5})
+	fmt.Println(Verify(pubKey, c, []byte{1, 2, 3, 4, 5}))
 }
 
 // 바이트를 문자열로
+/*
 func decode(b []byte) string {
 	return string(b[:len(b)])
 }
+*/
 
 //공개 키, 개인 키 생성
 func GetKey() (*ecdsa.PrivateKey, []byte) {
@@ -51,7 +57,7 @@ func GetKey() (*ecdsa.PrivateKey, []byte) {
 	return privateKey, publicKey
 }
 
-//서명    < 개인키로 해시된 id 서명 >
+//서명    < 개인키로 해시된 id 암호화 >
 func Sign(privKey ecdsa.PrivateKey, hashid []byte) []byte {
 
 	// 개인키로 HashID를 서명한다.

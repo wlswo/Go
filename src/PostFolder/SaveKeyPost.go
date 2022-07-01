@@ -5,7 +5,6 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/sha256"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -17,10 +16,9 @@ type Id_Key struct {
 }
 
 func main() {
-	privKey, pubKey := GetKey()
+	_, pubKey := GetKey()
 
 	data := Id_Key{"aaa", pubKey}
-	println(privKey)
 	//마샬링
 	bytes, _ := json.Marshal(data)
 	buff := b.NewBuffer([]byte(bytes))

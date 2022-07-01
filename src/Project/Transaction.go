@@ -97,11 +97,11 @@ func Verify(pubKey []byte, Sign []byte, hashid []byte) bool {
 
 func (tx *Tx) TPrint(i int) {
 	f.Println("-------------------------------", i, "번째 트랜잭션 ---------------------------------")
-	// f.Printf("TxID    	 : %x\n", tx.TxID)
-	// f.Println("TimeStamp 	 :", time.Unix(tx.TimeStamp, 0))
-	// f.Printf("UserID 		 : %s\n", tx.UserID)
-	// f.Printf("LogDB		 : %s\n", tx.LogDB)
-	// f.Printf("Content 	 : %s\n", tx.Content)
-	// f.Printf("Ctype 	 	 : %d\n", tx.RId)
-	// f.Println("-------------------------------------------------------------------------------------\n")
+	f.Printf("TxID    	 : %x\n", tx.TxID)
+	f.Println("TimeStamp 	 :", time.Unix(tx.TimeStamp, 0))
+	f.Printf("UserID 		 : %s\n", tx.UserID)
+	f.Printf("LogDB		 : %s\n", tx.LogDB)
+	f.Printf("Content 	 : %s\n", tx.Content)
+	f.Printf("Ctype 	 	 : %d\n", tx.RId)
+	f.Println("-------------------------------------------------------------------------------------\n")
 }

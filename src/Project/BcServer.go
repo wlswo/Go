@@ -33,11 +33,12 @@ func StartBCServer() {
 
 	bc := NewBlockchain()
 	/*
-			Block := bc.Blocks[len(bc.Blocks)-1]
-			bytes, _ := json.Marshal(Block)
-			buff := b.NewBuffer(bytes)
-			Block.BPrint()
-			resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
+		Block := bc.Blocks[len(bc.Blocks)-1]
+		bytes, _ := json.Marshal(Block)
+		buff := b.NewBuffer(bytes)
+		Block.BPrint()
+
+		resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
 
 		if err != nil {
 			panic(err)
@@ -68,8 +69,8 @@ func StartBCServer() {
 			*/
 			//1. UserId, Sign 값 가져오기
 			UserID := DataForSign.UserID
-			Sign := DataForSign.Sign
-			HashId := DataForSign.HashId
+			Sign := []byte{0}   //DataForSign.Sign
+			HashId := []byte{0} //DataForSign.HashId
 			//2.levelDB에서 ID에 맞는공개키 가져오기
 			data, err := db.Get([]byte(UserID), nil)
 			if err != nil {

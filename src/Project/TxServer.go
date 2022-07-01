@@ -13,8 +13,8 @@ type Data struct {
 	LogDB   string `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
 	RId     int64  `json:"RId"`     //Restaurant 번호
-	Sign    []byte `json:"Sign"`    //Id를 Hash + privKey로 암호화한 값
-	HashId  []byte `json:"HashId`   //Id를 Hash 한 값
+	//Sign    []byte `json:"Sign"`    //Id를 Hash + privKey로 암호화한 값
+	//HashId  []byte `json:"HashId`   //Id를 Hash 한 값
 }
 
 func StartTxServer() {
