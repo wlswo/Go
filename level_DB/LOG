@@ -1377,3 +1377,73 @@
 17:21:24.009403 db@janitor F·10 G·0
 17:21:24.009452 db@open done T·99.155833ms
 17:21:24.010275 table@move L0@340 -> L1
+=============== Jul 1, 2022 (KST) ===============
+18:24:47.083824 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:24:47.084978 version@stat F·[4 4] S·4KiB[607B 4KiB] Sc·[1.00 0.00]
+18:24:47.085020 db@open opening
+18:24:47.085280 journal@recovery F·1
+18:24:47.085672 journal@recovery recovering @341
+18:24:47.107057 memdb@flush created L0@343 N·1 S·182B "aaa,v564":"aaa,v564"
+18:24:47.108042 version@stat F·[5 4] S·4KiB[789B 4KiB] Sc·[1.25 0.00]
+18:24:47.183620 db@janitor F·11 G·0
+18:24:47.183665 db@open done T·98.632958ms
+18:24:47.184256 table@compaction L0·1 -> L1·1 S·364B Q·565
+18:24:47.204122 table@build created L1@346 N·1 S·182B "aaa,v564":"aaa,v564"
+18:24:47.204306 version@stat F·[4 4] S·4KiB[607B 4KiB] Sc·[1.00 0.00]
+18:24:47.223118 table@compaction committed F-1 S-182B Ke·0 D·1 T·38.709917ms
+18:24:47.224033 table@remove removed @325
+18:24:47.223249 table@move L0@340 -> L1
+18:24:47.224312 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+=============== Jul 1, 2022 (KST) ===============
+18:29:44.082817 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:29:44.083657 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:29:44.083685 db@open opening
+18:29:44.083926 journal@recovery F·1
+18:29:44.084230 journal@recovery recovering @344
+18:29:44.086193 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:29:44.168414 db@janitor F·11 G·1
+18:29:44.168436 db@janitor removing table-343
+18:29:44.168552 db@open done T·84.858375ms
+=============== Jul 1, 2022 (KST) ===============
+18:29:57.409625 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:29:57.410442 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:29:57.410471 db@open opening
+18:29:57.410712 journal@recovery F·1
+18:29:57.410993 journal@recovery recovering @347
+18:29:57.413050 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:29:57.489536 db@janitor F·10 G·0
+18:29:57.489572 db@open done T·79.09ms
+=============== Jul 1, 2022 (KST) ===============
+18:31:04.213508 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:31:04.214308 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:31:04.214334 db@open opening
+18:31:04.214573 journal@recovery F·1
+18:31:04.214869 journal@recovery recovering @349
+18:31:04.216758 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:31:04.296611 db@janitor F·10 G·0
+18:31:04.296662 db@open done T·82.317792ms
+=============== Jul 1, 2022 (KST) ===============
+18:44:08.427647 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:44:08.428489 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:44:08.428512 db@open opening
+18:44:08.428738 journal@recovery F·1
+18:44:08.429043 journal@recovery recovering @351
+18:44:08.451081 memdb@flush created L0@353 N·1 S·182B "bjj,v566":"bjj,v566"
+18:44:08.451342 version@stat F·[4 5] S·4KiB[607B 4KiB] Sc·[1.00 0.00]
+18:44:08.526640 db@janitor F·11 G·0
+18:44:08.526681 db@open done T·98.160166ms
+18:44:08.527127 table@compaction L0·1 -> L1·1 S·364B Q·567
+18:44:08.548081 table@build created L1@356 N·1 S·182B "bjj,v566":"bjj,v566"
+18:44:08.548391 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:44:08.566063 table@compaction committed F-1 S-182B Ke·0 D·1 T·38.645958ms
+18:44:08.567140 table@remove removed @340
+=============== Jul 1, 2022 (KST) ===============
+18:46:59.050140 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:46:59.050984 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:46:59.051008 db@open opening
+18:46:59.051232 journal@recovery F·1
+18:46:59.051552 journal@recovery recovering @354
+18:46:59.052766 version@stat F·[3 5] S·4KiB[425B 4KiB] Sc·[0.75 0.00]
+18:46:59.133853 db@janitor F·11 G·1
+18:46:59.133880 db@janitor removing table-353
+18:46:59.133978 db@open done T·82.963791ms

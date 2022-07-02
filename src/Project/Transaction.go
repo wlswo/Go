@@ -17,7 +17,7 @@ type Tx struct {
 	UserID    string `json:"UserID"`    //Tx 발생 시킨 유저 ID
 	LogDB     string `json:"LogDB"`     //LogDB 의 정보
 	Content   string `json:"Content"`   //Tx 내용
-	RId       int64  `json:"Rid"`       //Content Type
+	RId       string `json:"RId"`       //Content Type
 }
 
 type Txs struct {
@@ -102,6 +102,6 @@ func (tx *Tx) TPrint(i int) {
 	f.Printf("UserID 		 : %s\n", tx.UserID)
 	f.Printf("LogDB		 : %s\n", tx.LogDB)
 	f.Printf("Content 	 : %s\n", tx.Content)
-	f.Printf("Ctype 	 	 : %d\n", tx.RId)
+	f.Printf("RId 	 	 : %s\n", tx.RId)
 	f.Println("-------------------------------------------------------------------------------------\n")
 }
