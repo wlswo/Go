@@ -32,20 +32,19 @@ func StartBCServer() {
 	//서버 키면 제네시스 블럭을 PBFT 로 전송
 
 	bc := NewBlockchain()
-	/*
-		Block := bc.Blocks[len(bc.Blocks)-1]
-		bytes, _ := json.Marshal(Block)
-		buff := b.NewBuffer(bytes)
-		Block.BPrint()
 
-		resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
+	Block := bc.Blocks[len(bc.Blocks)-1]
+	bytes, _ := json.Marshal(Block)
+	buff := b.NewBuffer(bytes)
+	Block.BPrint()
 
-		if err != nil {
-			panic(err)
-		}
+	resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
 
-		defer resp.Body.Close()
-	*/
+	if err != nil {
+		panic(err)
+	}
+
+	defer resp.Body.Close()
 
 	// localhsot:80/create_bc 에 접속시
 	// 넘어오는 값은 트랜잭션 내용
@@ -134,13 +133,7 @@ func StartBCServer() {
 
 	})
 
-	//pbft -> Here Responce 합의 완료 답장
-	/*
-		{
-			Hash :
-			Height :
-		}
-	*/
+	//PBFT 합의 완료 답장
 	http.HandleFunc("/reply", func(res http.ResponseWriter, req *http.Request) {
 		respBody, err := ioutil.ReadAll(req.Body)
 		if err == nil {

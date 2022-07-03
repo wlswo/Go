@@ -48,8 +48,8 @@ func NewTranscation(data []byte) *Tx {
 	timestamp := strconv.FormatInt(Tx.TimeStamp, 10)
 	timeBytes := []byte(timestamp)
 
-	var blockBytes []byte
-	blockBytes = append(timeBytes, Tx.UserID...)
+	//var blockBytes []byte
+	blockBytes := append(timeBytes, Tx.UserID...)
 	// 		↳--------------↴
 	hash := sha256.Sum256(blockBytes)
 	Tx.TxID = hash[:]
