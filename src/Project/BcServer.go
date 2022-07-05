@@ -9,18 +9,20 @@ import (
 	"net/http"
 )
 
+//PBFT 응답 구조체
 type Result struct {
 	Hash   []byte `json:"Hash"`
 	Height int64  `json:"Height"`
 }
 
+//UserId - PubKey 받아오기 위한 구조체
 type UserKey struct {
 	UserId string `json:"UserId"`
 	PubKey []byte `json:"PubKey"`
 }
 
 var cntHeight int64
-var flag = 0
+var flag = 1
 
 func StartBCServer() {
 	//서버 키면 지정한 경로에 Level DB 생성
@@ -30,7 +32,6 @@ func StartBCServer() {
 	}
 
 	//서버 키면 제네시스 블럭을 PBFT 로 전송
-
 	bc := NewBlockchain()
 
 	Block := bc.Blocks[len(bc.Blocks)-1]
@@ -52,6 +53,7 @@ func StartBCServer() {
 
 		respBody, err := ioutil.ReadAll(req.Body)
 		if err == nil {
+			f.Println("트랜잭션 요청이 왔습니다. 검증을 시작합니다.")
 			TxData := []byte(respBody)
 
 			DataForSign := &Data{}
@@ -85,7 +87,7 @@ func StartBCServer() {
 			*/
 
 			if !Verify(data, Sign, HashId) {
-				f.Println("검증 성공\n 트랜잭션을 생성합니다.\n")
+				f.Println("<검증 성공> 트랜잭션을 생성합니다..")
 				bytes, _ := json.Marshal(DataForSign)
 				buff := b.NewBuffer([]byte(bytes))
 				resp, err := http.Post("http://localhost:81/create_tx", "application/json", buff)
@@ -102,7 +104,7 @@ func StartBCServer() {
 
 	})
 
-	/* 트랜잭션 검증이 끝난후 Tx서버에서 TxID를 넘겨 블록 생성 요청  */
+	/* 트랜잭션 검증이 끝난후 Tx서버에서 넘긴 TxID로 블록 생성 요청  */
 	http.HandleFunc("/newblock", func(res http.ResponseWriter, req *http.Request) {
 		respBody, err := ioutil.ReadAll(req.Body)
 		if err == nil {
@@ -116,7 +118,7 @@ func StartBCServer() {
 			Block := bc.Blocks[len(bc.Blocks)-1]
 			bytes, _ := json.Marshal(Block)
 			buff := b.NewBuffer(bytes)
-
+			f.Println("PBFT 메인노드에 블록정보를 보냅니다.")
 			resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
 
 			if err != nil {
@@ -136,30 +138,32 @@ func StartBCServer() {
 	})
 
 	//PBFT 합의 완료 답장
-	http.HandleFunc("/reply", func(res http.ResponseWriter, req *http.Request) {
-		respBody, err := ioutil.ReadAll(req.Body)
-		if err == nil {
-			data := &Result{}
-			err := json.Unmarshal([]byte(respBody), data)
+	/*
+		http.HandleFunc("/reply", func(res http.ResponseWriter, req *http.Request) {
+			respBody, err := ioutil.ReadAll(req.Body)
+			if err == nil {
+				data := &Result{}
+				err := json.Unmarshal([]byte(respBody), data)
 
-			if err != nil {
-				f.Println("에러  : 합의 답장 실패")
+				if err != nil {
+					f.Println("에러  : 합의 답장 실패")
 
-			} else {
+				} else {
 
-				f.Println("------Reply------")
-				f.Printf("Hash : %x\n", data.Hash)
-				f.Printf("Height : %d\n", data.Height)
-				f.Println("---------------")
+					f.Println("------Reply------")
+					f.Printf("Hash : %x\n", data.Hash)
+					f.Printf("Height : %d\n", data.Height)
+					f.Println("---------------")
 
-				//cntHeight = data.Height
-				flag = 1 //전송 실행 상태 On
+					//cntHeight = data.Height
+					flag = 1 //전송 실행 상태 On
+				}
 			}
-		}
 
-		defer req.Body.Close()
+			defer req.Body.Close()
 
-	})
+		})
+	*/
 
 	//회원의 ID에 맞는 공개키를 levelDB에 저장
 	http.HandleFunc("/save_key", func(res http.ResponseWriter, req *http.Request) {
