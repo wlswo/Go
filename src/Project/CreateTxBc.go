@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var cnt = 0
+var cnt = 1
 
 func (txs *Txs) CreateTx(data []byte) {
 	//트랜잭션 생성

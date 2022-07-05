@@ -12,7 +12,7 @@ type Data struct {
 	UserID  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
 	LogDB   string `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
-	RId     string `json:"RId"`     //Restaurant 번호
+	RId     string  `json:"RId"`     //Restaurant 번호
 	Sign    []byte `json:"Sign"`    //Id를 Hash + privKey로 암호화한 값
 	HashId  []byte `json:"HashId`   //Id를 Hash 한 값
 }

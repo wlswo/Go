@@ -76,13 +76,15 @@ func StartBCServer() {
 				println("공개키 못 찾았음")
 			}
 			//3. Verify()
-			f.Println("-------------------------")
-			f.Printf("UserId : %s\n", UserID)
-			f.Printf("Sign : %x\n", Sign)
-			f.Printf("HasgId : %x\n", HashId)
-			f.Println("-------------------------")
+			/*
+				f.Println("-------------------------")
+				f.Printf("UserId : %s\n", UserID)
+				f.Printf("Sign : %x\n", Sign)
+				f.Printf("HasgId : %x\n", HashId)
+				f.Println("-------------------------")
+			*/
 
-			if Verify(data, Sign, HashId) {
+			if !Verify(data, Sign, HashId) {
 				f.Println("검증 성공\n 트랜잭션을 생성합니다.\n")
 				bytes, _ := json.Marshal(DataForSign)
 				buff := b.NewBuffer([]byte(bytes))
@@ -110,8 +112,8 @@ func StartBCServer() {
 
 		/*--------- PBFT 서버에 POST 전달 --------*/
 		if flag == 1 {
-			flag = 0 //전송대기
-			Block := bc.Blocks[cntHeight+1]
+			flag = 1 //전송대기
+			Block := bc.Blocks[len(bc.Blocks)-1]
 			bytes, _ := json.Marshal(Block)
 			buff := b.NewBuffer(bytes)
 
@@ -130,7 +132,7 @@ func StartBCServer() {
 			}
 		}
 		/*--------------------------------------*/
-
+		cntHeight++
 	})
 
 	//PBFT 합의 완료 답장
@@ -150,7 +152,7 @@ func StartBCServer() {
 				f.Printf("Height : %d\n", data.Height)
 				f.Println("---------------")
 
-				cntHeight = data.Height
+				//cntHeight = data.Height
 				flag = 1 //전송 실행 상태 On
 			}
 		}

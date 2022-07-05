@@ -2,9 +2,6 @@ package main
 
 import (
 	b "bytes"
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -41,17 +38,4 @@ func main() {
 		println(str)
 	}
 
-}
-
-//공개 키, 개인 키 생성
-func GetKey() (*ecdsa.PrivateKey, []byte) {
-	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	if err != nil {
-		println(err)
-	}
-
-	//개인 키를 사용해 공개 키 생성
-	publicKey := append(privateKey.PublicKey.X.Bytes(), privateKey.PublicKey.Y.Bytes()...)
-
-	return privateKey, publicKey
 }

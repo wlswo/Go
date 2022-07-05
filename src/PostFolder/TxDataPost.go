@@ -9,21 +9,23 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"time"
+	//"time"
 )
 
 type Data struct {
 	UserID  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
 	LogDB   string `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
-	RId     int64  `json:"RId"`     //Content Type
+	RId     string `json:"RId"`     //Content Type
 	Sign    []byte `json:"Sign"`    //Signature <= UserID 를 SHA256() 해시화 하여 개인키로 (ecdsa.Sign() 함수 이용 ) 암호화한 값
 	HashId  []byte `json:"HashId"`  //Id를 sha256 돌린값
 }
 
 func main() {
-	for i := 0; i < 10000; i++ {
-		time.Sleep(time.Second * 1)
+	for i := 0; i < 3000; i++ {
+		//0.7 sec
+		//time.Sleep(time.Nanosecond * 500000000)
+		//time.Sleep(time.Second * 1)
 		privKey, _ := GetKey()
 		//Id 해시
 		hashId := Hash("aaa")
@@ -32,7 +34,7 @@ func main() {
 		//r,s 더한값이 서명
 		Signature := append(r.Bytes(), s.Bytes()...)
 
-		data := Data{"aaa", "walletDB", "A가 B를 수정2", 111, Signature, hashId}
+		data := Data{"aaa", "walletDB", "A가 B를 수정2", "Restorant ID", Signature, hashId}
 
 		//마샬링
 		bytes, _ := json.Marshal(data)
