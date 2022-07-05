@@ -22,7 +22,7 @@ type Data struct {
 }
 
 func main() {
-	for i := 0; i < 3000; i++ {
+	for i := 0; i < 10000; i++ {
 		//0.7 sec
 		//time.Sleep(time.Nanosecond * 500000000)
 		//time.Sleep(time.Second * 1)
