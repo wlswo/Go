@@ -14,15 +14,15 @@ import (
 
 type Data struct {
 	UserID  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
-	LogDB   string `json:"LogDB"`   //LogDB 의 정보
+	LogDB   int    `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
-	RId     string `json:"RId"`     //Content Type
+	RId     int    `json:"RId"`     //Content Type
 	Sign    []byte `json:"Sign"`    //Signature <= UserID 를 SHA256() 해시화 하여 개인키로 (ecdsa.Sign() 함수 이용 ) 암호화한 값
 	HashId  []byte `json:"HashId"`  //Id를 sha256 돌린값
 }
 
 func main() {
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 1; i++ {
 		//0.7 sec
 		//time.Sleep(time.Nanosecond * 500000000)
 		//time.Sleep(time.Second * 1)
@@ -34,7 +34,8 @@ func main() {
 		//r,s 더한값이 서명
 		Signature := append(r.Bytes(), s.Bytes()...)
 
-		data := Data{"aaa", "walletDB", "A가 B를 수정2", "Restorant ID", Signature, hashId}
+		//			 id     Db Content Rid   sign     hashid
+		data := Data{"dark3", 2, "바 두", 1, Signature, hashId}
 
 		//마샬링
 		bytes, _ := json.Marshal(data)

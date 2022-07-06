@@ -15,9 +15,9 @@ type Tx struct {
 	TxID      []byte `json:"TxID"`      //sha256(Data + TimeStamp + Nonce)
 	TimeStamp int64  `json:"TimeStamp"` //Tx 생성시간
 	UserID    string `json:"UserID"`    //Tx 발생 시킨 유저 ID
-	LogDB     string `json:"LogDB"`     //LogDB 의 정보
+	LogDb     int    `json:"LogDB"`     //LogDB 의 정보
 	Content   string `json:"Content"`   //Tx 내용
-	RId       string `json:"RId"`       //Content Type
+	RId       int    `json:"RId"`       //Content Type
 }
 
 type Txs struct {
@@ -104,4 +104,21 @@ func (tx *Tx) TPrint(i int) {
 	// f.Printf("Content 	 : %s\n", tx.Content)
 	// f.Printf("RId 	 	 : %s\n", tx.RId)
 	// f.Println("-------------------------------------------------------------------------------------\n")
+}
+
+func (txs *Txs) Find_Current_tx(Rid int, LogDb int) *Tx {
+	CurrentTxs := &Txs{}
+	for _, v := range txs.Txs {
+		if v.RId == Rid && v.LogDb == LogDb {
+
+			CurrentTxs.Txs = append(CurrentTxs.Txs, v)
+		}
+	}
+
+	if CurrentTxs.Txs != nil {
+		return CurrentTxs.Txs[len(CurrentTxs.Txs)-1]
+	} else {
+		return nil
+	}
+
 }

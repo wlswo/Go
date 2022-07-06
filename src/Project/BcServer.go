@@ -33,19 +33,21 @@ func StartBCServer() {
 
 	//서버 키면 제네시스 블럭을 PBFT 로 전송
 	bc := NewBlockchain()
+	/*
 
-	Block := bc.Blocks[len(bc.Blocks)-1]
-	bytes, _ := json.Marshal(Block)
-	buff := b.NewBuffer(bytes)
-	Block.BPrint()
+		Block := bc.Blocks[len(bc.Blocks)-1]
+		bytes, _ := json.Marshal(Block)
+		buff := b.NewBuffer(bytes)
+		Block.BPrint()
 
-	resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
+		resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
 
-	if err != nil {
-		panic(err)
-	}
+		if err != nil {
+			panic(err)
+		}
 
-	defer resp.Body.Close()
+		defer resp.Body.Close()
+	*/
 
 	// localhsot:80/create_bc 에 접속시
 	// 넘어오는 값은 트랜잭션 내용
@@ -62,6 +64,13 @@ func StartBCServer() {
 			if err != nil {
 				println("Json Unmarshal Fail")
 			}
+			f.Printf("UserId  : %s\n", DataForSign.UserId)
+			f.Printf("LogDb   : %d\n", DataForSign.LogDb)
+			f.Printf("Content : %s\n", DataForSign.Content)
+			f.Printf("Rid     : %d\n", DataForSign.RId)
+			f.Printf("Sign    : %x\n", DataForSign.Sign)
+			f.Printf("HashId  : %x\n", DataForSign.HashId)
+
 			/*
 				1. DataForSign 의 UserId 와 Sign 을 뽑아온다.
 				2. LevelDB에서 UserId 가 가진 공개키를 가져온다.
@@ -69,7 +78,7 @@ func StartBCServer() {
 				4. bool 값에 따라 처리한다.
 			*/
 			//1. UserId, Sign 값 가져오기
-			UserID := DataForSign.UserID
+			UserID := DataForSign.UserId
 			Sign := DataForSign.Sign
 			HashId := DataForSign.HashId
 			//2.levelDB에서 ID에 맞는공개키 가져오기

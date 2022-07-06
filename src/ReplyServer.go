@@ -34,7 +34,7 @@ func main() {
 				f.Println("---------------------- 합의 완료 / 받은 블록정보 ----------------------\n")
 				f.Printf("Hash : %x\n", data.Hash)
 				f.Printf("Height : %d\n", data.Height)
-				f.Println("-----------------------------------------------------------------\n")
+				f.Println("-----------------------------------------------------------------------\n")
 				if data.Height == 10000 {
 					delta := time.Now().Sub(startTime)
 					f.Printf("done in %.3fs.\n", delta.Seconds())
@@ -48,6 +48,6 @@ func main() {
 
 	})
 
-	http.ListenAndServe(":83", nil) //80번 포트에서 웹 서버 실행
+	http.ListenAndServe(":83", nil) //83번 포트에서 웹 서버 실행
 
 }

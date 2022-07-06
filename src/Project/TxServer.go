@@ -2,19 +2,24 @@ package Project
 
 import (
 	b "bytes"
-	//"encoding/json"
+	"encoding/json"
 	f "fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 type Data struct {
-	UserID  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
-	LogDB   string `json:"LogDB"`   //LogDB 의 정보
+	UserId  string `json:"UserID"`  //Tx 발생 시킨 유저 ID
+	LogDb   int    `json:"LogDB"`   //LogDB 의 정보
 	Content string `json:"Content"` //Tx 내용
-	RId     string  `json:"RId"`     //Restaurant 번호
+	RId     int    `json:"RId"`     //Restaurant 번호
 	Sign    []byte `json:"Sign"`    //Id를 Hash + privKey로 암호화한 값
 	HashId  []byte `json:"HashId`   //Id를 Hash 한 값
+}
+
+type CurrentTxData struct {
+	LogDb int `json:"LogDB"` //LogDB 의 정보
+	RId   int `json:"RId"`   //Restaurant 번호
 }
 
 func StartTxServer() {
@@ -66,7 +71,52 @@ func StartTxServer() {
 			for _, v := range UserTxs.Txs {
 				f.Printf("TxID : %x\n", v.TxID)
 				f.Printf("UserId : %s\n", v.UserID)
+				f.Printf("Content : %s\n", v.Content)
 			}
+			//트랜잭션 조회 결과를 Restful Api로 응답
+			// resp, err := http.Post("http://localhost:80/finded_tx", "application/json", buff)
+
+			// if err != nil {
+			// 	panic(err)
+			// }
+			// defer resp.Body.Close()
+
+			// respBody, err = ioutil.ReadAll(resp.Body)
+			// if err == nil {
+			// 	str := string(respBody)
+			// 	println(str)
+			// }
+		}
+
+		//res.Write([]byte(b)) //웹 브라우저에 응답
+	})
+
+	//http://localhost:81/current_tx 접속시 받는값은 Rid 의 0 1 2 3 값들의 최신 트랜잭션
+	http.HandleFunc("/current_tx", func(res http.ResponseWriter, req *http.Request) {
+
+		respBody, err := ioutil.ReadAll(req.Body)
+		if err == nil {
+			data := &CurrentTxData{}
+			err := json.Unmarshal(respBody, data)
+			if err != nil {
+				f.Println("최신 트랜잭션 조회 언마샬 실패")
+			}
+			f.Println(data.RId)
+			f.Println(data.LogDb)
+
+			CurrentTx := txs.Find_Current_tx(data.RId, data.LogDb) //최신 트랜잭션 조회
+
+			if CurrentTx != nil {
+				f.Printf("UserId : %s\n", CurrentTx.UserID)
+				f.Printf("Content : %s\n", CurrentTx.Content)
+				f.Printf("Rid : %d\n", CurrentTx.RId)
+			} else {
+				f.Println("조회 결과 없음")
+			}
+			//구조체 마샬
+			//bytes, _ := json.Marshal(UserTxs)
+			//buff := b.NewBuffer(bytes)
+
 			//트랜잭션 조회 결과를 Restful Api로 응답
 			// resp, err := http.Post("http://localhost:80/finded_tx", "application/json", buff)
 
