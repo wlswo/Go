@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	//"time"
 )
 
 type Data struct {
@@ -22,10 +21,8 @@ type Data struct {
 }
 
 func main() {
-	for i := 0; i < 1; i++ {
-		//0.7 sec
-		//time.Sleep(time.Nanosecond * 500000000)
-		//time.Sleep(time.Second * 1)
+	for i := 0; i < 10000; i++ {
+
 		privKey, _ := GetKey()
 		//Id 해시
 		hashId := Hash("aaa")
@@ -35,7 +32,7 @@ func main() {
 		Signature := append(r.Bytes(), s.Bytes()...)
 
 		//			 id     Db Content Rid   sign     hashid
-		data := Data{"dark3", 2, "바 두", 1, Signature, hashId}
+		data := Data{"dark3", 0, "바 두", 0, Signature, hashId}
 
 		//마샬링
 		bytes, _ := json.Marshal(data)

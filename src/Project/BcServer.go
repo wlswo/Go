@@ -33,21 +33,19 @@ func StartBCServer() {
 
 	//서버 키면 제네시스 블럭을 PBFT 로 전송
 	bc := NewBlockchain()
-	/*
 
-		Block := bc.Blocks[len(bc.Blocks)-1]
-		bytes, _ := json.Marshal(Block)
-		buff := b.NewBuffer(bytes)
-		Block.BPrint()
+	Block := bc.Blocks[len(bc.Blocks)-1]
+	bytes, _ := json.Marshal(Block)
+	buff := b.NewBuffer(bytes)
+	Block.BPrint()
 
-		resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
+	resp, err := http.Post("http://192.168.10.57:4000/pbft", "application/json", buff)
 
-		if err != nil {
-			panic(err)
-		}
+	if err != nil {
+		panic(err)
+	}
 
-		defer resp.Body.Close()
-	*/
+	defer resp.Body.Close()
 
 	// localhsot:80/create_bc 에 접속시
 	// 넘어오는 값은 트랜잭션 내용
@@ -77,6 +75,7 @@ func StartBCServer() {
 				3. 가져온 공개키로 Sign 을 Verify() 한다.
 				4. bool 값에 따라 처리한다.
 			*/
+
 			//1. UserId, Sign 값 가져오기
 			UserID := DataForSign.UserId
 			Sign := DataForSign.Sign
@@ -87,15 +86,7 @@ func StartBCServer() {
 				println("공개키 못 찾았음")
 			}
 			//3. Verify()
-			/*
-				f.Println("-------------------------")
-				f.Printf("UserId : %s\n", UserID)
-				f.Printf("Sign : %x\n", Sign)
-				f.Printf("HasgId : %x\n", HashId)
-				f.Println("-------------------------")
-			*/
-
-			if !Verify(data, Sign, HashId) {
+			if Verify(data, Sign, HashId) {
 				f.Println("<검증 성공> 트랜잭션을 생성합니다..")
 				bytes, _ := json.Marshal(DataForSign)
 				buff := b.NewBuffer([]byte(bytes))
@@ -146,38 +137,11 @@ func StartBCServer() {
 		cntHeight++
 	})
 
-	//PBFT 합의 완료 답장
-	/*
-		http.HandleFunc("/reply", func(res http.ResponseWriter, req *http.Request) {
-			respBody, err := ioutil.ReadAll(req.Body)
-			if err == nil {
-				data := &Result{}
-				err := json.Unmarshal([]byte(respBody), data)
-
-				if err != nil {
-					f.Println("에러  : 합의 답장 실패")
-
-				} else {
-
-					f.Println("------Reply------")
-					f.Printf("Hash : %x\n", data.Hash)
-					f.Printf("Height : %d\n", data.Height)
-					f.Println("---------------")
-
-					//cntHeight = data.Height
-					flag = 1 //전송 실행 상태 On
-				}
-			}
-
-			defer req.Body.Close()
-
-		})
-	*/
-
 	//회원의 ID에 맞는 공개키를 levelDB에 저장
 	http.HandleFunc("/save_key", func(res http.ResponseWriter, req *http.Request) {
 		respBody, err := ioutil.ReadAll(req.Body)
 		UserKey := &UserKey{}
+
 		if err == nil {
 			err := json.Unmarshal(respBody, UserKey)
 			if err != nil {

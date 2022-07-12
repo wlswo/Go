@@ -122,3 +122,18 @@ func (txs *Txs) Find_Current_tx(Rid int, LogDb int) *Tx {
 	}
 
 }
+
+//저장된 트랜잭션을 참조하고, 요청할 정보가 담긴 구조체를 인자로
+func (txs *Txs) GetRTxs(RidTxs *RidTxs) *Txs {
+	respTxs := &Txs{}
+
+	for _, v := range RidTxs.Rts {
+		for _, v2 := range txs.Txs {
+			if v.LogDb == v2.LogDb && v.RId == v2.RId {
+				respTxs.Txs = append(respTxs.Txs, v2)
+			}
+		}
+	}
+
+	return respTxs
+}

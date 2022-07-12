@@ -18,8 +18,12 @@ type Data struct {
 }
 
 type CurrentTxData struct {
-	LogDb int `json:"LogDB"` //LogDB 의 정보
+	LogDb int `json:"LogDb"` //LogDB 의 정보
 	RId   int `json:"RId"`   //Restaurant 번호
+}
+
+type RidTxs struct {
+	Rts []*CurrentTxData `json:"Rts"`
 }
 
 func StartTxServer() {
@@ -113,26 +117,64 @@ func StartTxServer() {
 			} else {
 				f.Println("조회 결과 없음")
 			}
+
 			//구조체 마샬
-			//bytes, _ := json.Marshal(UserTxs)
-			//buff := b.NewBuffer(bytes)
+			bytes, _ := json.Marshal(CurrentTx)
 
 			//트랜잭션 조회 결과를 Restful Api로 응답
-			// resp, err := http.Post("http://localhost:80/finded_tx", "application/json", buff)
+			/*
+				buff := b.NewBuffer(bytes)
+				resp, err := http.Post("http://localhost:80/finded_tx", "application/json", buff)
 
-			// if err != nil {
-			// 	panic(err)
-			// }
-			// defer resp.Body.Close()
+				if err != nil {
+					panic(err)
+				}
+				defer resp.Body.Close()
+				respBody, err = ioutil.ReadAll(resp.Body)
+				if err == nil {
+					str := string(respBody)
+					println(str)
+				}
+			*/
 
-			// respBody, err = ioutil.ReadAll(resp.Body)
-			// if err == nil {
-			// 	str := string(respBody)
-			// 	println(str)
-			// }
+			res.Write(bytes)
+
 		}
 
 		//res.Write([]byte(b)) //웹 브라우저에 응답
+	})
+
+	//http://192.168.10.24:81/Rid_txs 접속시 받는값은 Rid 의 0 1 2 3 값들의 최신 트랜잭션
+	http.HandleFunc("/rid_txs", func(res http.ResponseWriter, req *http.Request) {
+
+		respBody, err := ioutil.ReadAll(req.Body)
+		if err == nil {
+
+			data := &RidTxs{}
+
+			err := json.Unmarshal(respBody, data)
+
+			if err != nil {
+				f.Println("트랜잭션 CTxs 언마샬 실패")
+			}
+
+			for _, v := range data.Rts {
+				f.Printf("LogDb %d : ", v.LogDb)
+				f.Printf("Rid %d : ", v.RId)
+
+			}
+			//탐색 시작
+			respTXs := txs.GetRTxs(data)
+
+			if respTXs.Txs == nil {
+				f.Println("못찾음")
+				res.Write([]byte("못찾음"))
+			} else {
+				bytes, _ := json.Marshal(respTXs)
+				res.Write(bytes)
+			}
+		}
+
 	})
 
 	http.ListenAndServe(":81", nil) //80번 포트에서 웹 서버 실행

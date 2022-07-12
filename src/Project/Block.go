@@ -73,7 +73,7 @@ func NewBlock(TxID []byte, prevBlockHash []byte) *Block {
 }
 
 func NewGenesisBlock() *Block {
-	Tx := &Data{"Genesis Block", 000, "Genesis Block", 000, []byte("Genesis Block"), []byte("Genesis Block")}
+	Tx := &Data{"Genesis Block", 0, "Genesis Block", 0, []byte("Genesis Block"), []byte("Genesis Block")}
 	bytes, _ := json.Marshal(Tx)
 	return NewBlock(bytes, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 }
