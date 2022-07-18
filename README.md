@@ -3,7 +3,6 @@ Go 언어에 관한 공부한 것을 올립니다.
 
 참고 링크
 
-
 Go로 구현하는 블록체인<br>
 ```
 https://mingrammer.com/building-blockchain-in-go-part-1/
